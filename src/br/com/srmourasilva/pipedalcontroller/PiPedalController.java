@@ -1,7 +1,5 @@
 package br.com.srmourasilva.pipedalcontroller;
 
-import javax.sound.midi.MidiUnavailableException;
-
 import com.pi4j.component.display.Display;
 import com.pi4j.component.display.impl.PCD8544DisplayComponent;
 import com.pi4j.io.gpio.GpioController;
@@ -12,8 +10,10 @@ import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
 
 import br.com.srmourasilva.architecture.exception.DeviceNotFoundException;
+import br.com.srmourasilva.architecture.exception.DeviceUnavailableException;
 import br.com.srmourasilva.multistomp.controller.PedalController;
 import br.com.srmourasilva.multistomp.controller.PedalControllerFactory;
+import br.com.srmourasilva.multistomp.zoom.ZoomG3Type;
 import br.com.srmourasilva.pipedalcontroller.domain.PhysicalEffect;
 import br.com.srmourasilva.pipedalcontroller.domain.PhysicalPedalController;
 import br.com.srmourasilva.pipedalcontroller.domain.clicable.Clicable;
@@ -59,7 +59,7 @@ public class PiPedalController {
 		
 		PedalController pedal;
 		try {
-			pedal = PedalControllerFactory.searchPedal();
+			pedal = PedalControllerFactory.generateControllerFor(ZoomG3Type.class);
 		} catch (DeviceNotFoundException e1) {
 			System.out.println("Pedal not found! You connected any?");
 			e1.printStackTrace();
@@ -77,7 +77,7 @@ public class PiPedalController {
 
 		try {
 			multistomp.start();
-		} catch (MidiUnavailableException e) {
+		} catch (DeviceUnavailableException e) {
 			System.out.println("This Pedal has been used by other process program");
 		}
 	}

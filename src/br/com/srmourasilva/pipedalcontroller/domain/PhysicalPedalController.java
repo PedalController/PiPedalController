@@ -1,13 +1,12 @@
 package br.com.srmourasilva.pipedalcontroller.domain;
 
-import javax.sound.midi.MidiUnavailableException;
-
 import com.pi4j.component.display.Display;
 
-import br.com.srmourasilva.domain.OnMultistompListener;
+import br.com.srmourasilva.architecture.exception.DeviceUnavailableException;
 import br.com.srmourasilva.domain.message.CommonCause;
 import br.com.srmourasilva.domain.message.Messages;
 import br.com.srmourasilva.domain.message.Messages.Message;
+import br.com.srmourasilva.domain.multistomp.OnMultistompListener;
 import br.com.srmourasilva.multistomp.controller.PedalController;
 import br.com.srmourasilva.multistomp.zoom.gseries.ZoomGSeriesMessages;
 import br.com.srmourasilva.pipedalcontroller.domain.clicable.Clicable;
@@ -46,7 +45,7 @@ public class PhysicalPedalController implements OnMultistompListener {
 		pedalboard.vinculeDisplayPatch(display);
 	}
 
-	public void start() throws MidiUnavailableException {
+	public void start() throws DeviceUnavailableException {
 		pedal.on();
 		pedal.send(ZoomGSeriesMessages.REQUEST_CURRENT_PATCH_NUMBER());
 	}
